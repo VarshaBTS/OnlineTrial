@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,15 @@ import com.example.demo.entity.Test;
 import com.example.demo.repository.QuestionsRepository;
 import com.example.demo.repository.TestRepository;
 import com.example.demo.service.QuestionsService;
+import com.example.demo.service.TestService;
 
 @RestController
 @RequestMapping("/q")
 public class QuestionController {
 	@Autowired
 	QuestionsService ser;
+	@Autowired
+	TestService tser;
 	@Autowired
 	TestRepository trep;
 	@Autowired
@@ -60,8 +64,20 @@ public class QuestionController {
 		
 	}
 	
+	@DeleteMapping("/delt/{testid}")
+	public ResponseEntity<Questions> deleteT(@PathVariable(value="testid")int testid)
+	{
+		Optional<Test> t=trep.findById(testid);
+		if(t==null) {
+			return ResponseEntity.notFound().build();
+		}
+		trep.deleteById(testid);
+		return ResponseEntity.ok().build();
+		
+	}
+	
 	@PutMapping("/uptquestions/{qid}")
-	public ResponseEntity<Questions> updateCity(@PathVariable(value="qid")int qid,@RequestBody Questions q){
+	public ResponseEntity<Questions> updateQ(@PathVariable(value="qid")int qid,@RequestBody Questions q){
 		Questions q1=ser.findOne(qid);
 		if(q1==null) {
 			return ResponseEntity.notFound().build();
@@ -75,6 +91,60 @@ public class QuestionController {
 		return ResponseEntity.ok().body(q2);
 	}
 	
+	@PutMapping("/upttest/{testid}")
+	public ResponseEntity<Test> updateT(@PathVariable(value="testid")int testid,@RequestBody Test t){
+		Test t1=tser.findOne(testid);
+		if(t1==null) {
+			return ResponseEntity.notFound().build();
+		}
+		t1.setTesttitle(t.getTesttitle());
+		t1.setTestmarks(t.getTestmarks());
+		t1.setTesttotalmarks(t.getTesttotalmarks());
+		
+		Test t2=trep.save(t1);
+		return ResponseEntity.ok().body(t2);
+	}
+	
+	
+	/*
+	//add questions to test
+	@PostMapping("/{testid}/{qid}")
+	public void addQtoTest(@PathVariable(value="testid")int testid,@PathVariable(value="qid")int qid)
+	{
+		Test t = null;
+		List<Questions> l = null;
+		Questions q=qrep.getOne(qid);
+		l.add(q);
+		t.setTquestions(l);
+	}
+	
+	@PostMapping("/{testid}/{qid}")
+	public void addqttrial(@PathVariable(value="testid")int testid,@PathVariable(value="qid")int qid)
+	{
+		Questions q=qrep.getOne(qid);
+		Test t=trep.getOne(testid);
+		
+		//Test t = null;
+		List<Questions> l = null;
+		l.add(q);
+		t.setTquestions(l);
+	}
+	*/
+
+	/*
+	@PostMapping("/{testid}/{qid}")
+	public Questions createT(@PathVariable(value="testid")int testid,
+			@PathVariable(value="qid")int qid)
+	{
+		Questions q=qrep.getOne(qid);
+		
+		Test t=trep.getOne(testid);
+		q.setTest(t);
+		return q;
+		
+		//q.setQid(rd.get(qid));
+	}
+	*/
 	
 
 }

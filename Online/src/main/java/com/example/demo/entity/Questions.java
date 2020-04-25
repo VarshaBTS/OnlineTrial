@@ -23,8 +23,17 @@ public class Questions {
 	private String opt2;
 	private int qans;
 	private long qmarks;
+	//changes made at 25-04-2020 night
+	/*private Test testid;
 	
 	
+	public Test getTestid() {
+		return testid;
+	}
+	public void setTestid(Test testid) {
+		this.testid = testid;
+	}
+	*/
 	public String getOpt1() {
 		return opt1;
 	}
