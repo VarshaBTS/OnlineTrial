@@ -23,6 +23,8 @@ public class Questions {
 	private String opt2;
 	private int qans;
 	private long qmarks;
+	private int choosenAns;
+	private long marksScored;
 	//changes made at 25-04-2020 night
 	/*private Test testid;
 	

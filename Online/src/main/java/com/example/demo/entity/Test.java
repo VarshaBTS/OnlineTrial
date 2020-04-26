@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="Test")
 public class Test {
@@ -23,12 +25,12 @@ public class Test {
 	@Column(name="t_id")
 	private int testid;
 	private String testtitle;
-	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	@OneToMany(targetEntity=Questions.class,cascade=CascadeType.ALL)
 	@JoinColumn(name="testid",referencedColumnName="t_id")
 	private List<Questions> tquestions;
 	private long testtotalmarks;
-	private long testmarks;
+	private long testmarksScored;
 	public int getTestid() {
 		return testid;
 	}
@@ -54,10 +56,10 @@ public class Test {
 		this.testtotalmarks = testtotalmarks;
 	}
 	public long getTestmarks() {
-		return testmarks;
+		return testmarksScored;
 	}
 	public void setTestmarks(long testmarks) {
-		this.testmarks = testmarks;
+		this.testmarksScored = testmarks;
 	}
 	
 	

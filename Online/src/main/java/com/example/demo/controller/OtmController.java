@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ import com.example.demo.service.TestService;
 
 @RestController
 @RequestMapping("/q")
-public class QuestionController {
+public class OtmController {
 	@Autowired
 	QuestionsService ser;
 	@Autowired
@@ -117,19 +118,30 @@ public class QuestionController {
 		l.add(q);
 		t.setTquestions(l);
 	}
-	
-	@PostMapping("/{testid}/{qid}")
-	public void addqttrial(@PathVariable(value="testid")int testid,@PathVariable(value="qid")int qid)
+	*/
+	@PutMapping("/{testid}/{qid}")
+	public ResponseEntity<Test> addqttrial(@PathVariable(value="testid")int testid,@PathVariable(value="qid")int qid)
 	{
+		Test t1=tser.findOne(testid);
+		if(t1==null) {
+			return ResponseEntity.notFound().build();
+		}
+		Questions q1=ser.findOne(qid);
+		List<Questions> l=new ArrayList<>();
+		l.add(q1);
+		t1.setTquestions(l);
+		Test t2=trep.save(t1);
+		return ResponseEntity.ok().body(t2);
+		/*
 		Questions q=qrep.getOne(qid);
 		Test t=trep.getOne(testid);
-		
 		//Test t = null;
 		List<Questions> l = null;
 		l.add(q);
 		t.setTquestions(l);
+		trep.save(t);*/
 	}
-	*/
+	
 
 	/*
 	@PostMapping("/{testid}/{qid}")
@@ -145,6 +157,8 @@ public class QuestionController {
 		//q.setQid(rd.get(qid));
 	}
 	*/
+
+	
 	
 
 }
